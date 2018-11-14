@@ -58,8 +58,18 @@ app.put('/movies/update/:id', function(req, res){
     // res.send("Update Movie details" + id);
 })
 
-app.get('/movies/delete', function(req, res){
-    res.send('Delete Movies url')
+app.delete('/movies/delete/:id', function(req, res){
+    let id = req.params.id;
+    db.query("DELETE FROM movies WHERE id= ? ", id, function(err, results){
+        if(err) { res.send({"error" : true, "message": "Delete operation not successful"})}
+        else{
+            if(res.affectedRows > 0){
+                res.send({"error": false, "message": "record deleted successfully"});
+            }else{
+                res.send({"error": true, "message": "No record found "});
+            }
+        }
+    })
 })
 
 app.listen(5000, function(){
