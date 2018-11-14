@@ -19,12 +19,10 @@ app.get('/', function(req, res, next){
 })
 
 app.post('/movies/add', function(req, res, next){
-    //check if a movie with that name already exist 
-    // throw error or not 
+   
     let title = req.body.title;
     let genre = req.body.genre;
     let year = req.body.year;
-    console.log(title);
     db.query('SELECT * FROM movies WHERE title = ?', title, (err, results) => {
        if(results.length == 1){
             res.status(404).send({'error': true, "message": "record already exist"})
@@ -55,7 +53,6 @@ app.put('/movies/update/:id', function(req, res){
             }
         }
     })
-    // res.send("Update Movie details" + id);
 })
 
 app.delete('/movies/delete/:id', function(req, res){
@@ -71,7 +68,7 @@ app.delete('/movies/delete/:id', function(req, res){
         }
     })
 })
-
-app.listen(5000, function(){
-    console.log("Application started");
+let port = process.env.PORT || 5000;
+app.listen(port, function(){
+    console.log(`Application started on port ${port}`);
 })
