@@ -1,9 +1,16 @@
 const express = require('express')
 const app = express()
+const db = require('./config/connection');
+
 
 
 app.get('/', function(req, res, next){
-    res.send("Welcome to the Movies Collection database");
+    var movies = "";
+    db.query("SELECT * FROM movies ", function(err, result, fields){
+        if(err){throw new Error("Error getting all movies" +  err);}
+        movies = res;
+        res.send(JSON.stringify(result));
+    })
 })
 
 app.get('/movies/add', function(req, res){
@@ -18,6 +25,6 @@ app.get('/movies/delete', function(req, res){
     res.send('Delete Movies url')
 })
 
-app.listen(3000, function(){
+app.listen(5000, function(){
     console.log("Application started");
 })
