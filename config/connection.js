@@ -8,9 +8,11 @@ const connection = mysql.createConnection({
 
 connection.connect();
 
-connection.query('SELECT * FROM movies', function(err, results, fields){
-    if(err) { 
-        throw new Error("There was an error with the query");
-    }
-    console.log("The movies are ", results);
-});
+// connection.query('SELECT * FROM movies', function(err, results, fields){
+//     if(err) { 
+//         throw new Error("There was an error with the query");
+//     }
+//     console.log("The movies are ", results);
+// });
+
+module.exports = connection;
