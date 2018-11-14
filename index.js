@@ -14,7 +14,7 @@ app.get('/', function(req, res, next){
     db.query("SELECT * FROM movies ", function(err, result, fields){
         if(err){throw new Error("Error getting all movies" +  err);}
         movies = res;
-        res.send(JSON.stringify(result));
+        res.send({"error": false, "message" : result});
     })
 })
 
