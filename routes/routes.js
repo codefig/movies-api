@@ -6,6 +6,7 @@ moviesRouter.post('/add', function(req, res, next){
     let title = req.body.title;
     let genre = req.body.genre;
     let year = req.body.year;
+    
     db.query('SELECT * FROM movies WHERE title = ?', title, (err, results) => {
        if(results.length == 1){
             res.status(404).send({'error': true, "message": "record already exist"})
