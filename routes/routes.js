@@ -1,24 +1,7 @@
 const express = require('express')
-const bodyparser = require('body-parser');
-const app = express()
-const db = require('./config/connection');
+const moviesRouter = express.Router();
 
-
-app.use(express.json());
-app.use(express.urlencoded({extended: true}));
-
-
-
-app.get('/', function(req, res, next){
-    var movies = "";
-    db.query("SELECT * FROM movies ", function(err, result, fields){
-        if(err){throw new Error("Error getting all movies" +  err);}
-        movies = res;
-        res.send({"error": false, "message" : result});
-    })
-})
-
-app.post('/movies/add', function(req, res, next){
+moviesRouter.post('/add', function(req, res, next){
    
     let title = req.body.title;
     let genre = req.body.genre;
@@ -39,7 +22,7 @@ app.post('/movies/add', function(req, res, next){
 
 })
 
-app.put('/movies/update/:id', function(req, res){
+moviesRouter.put('/update/:id', function(req, res){
     let id = req.params.id;
     let mtitle = req.body.title;
     let mgenre = req.body.genre;
@@ -55,7 +38,7 @@ app.put('/movies/update/:id', function(req, res){
     })
 })
 
-app.delete('/movies/delete/:id', function(req, res){
+moviesRouter.delete('/delete/:id', function(req, res){
     let id = req.params.id;
     db.query("DELETE FROM movies WHERE id= ? ", id, function(err, results){
         if(err) { res.send({"error" : true, "message": "Delete operation not successful"})}
@@ -68,3 +51,5 @@ app.delete('/movies/delete/:id', function(req, res){
         }
     })
 })
+
+module.exports = moviesRouter;
