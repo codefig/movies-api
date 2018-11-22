@@ -2,12 +2,14 @@ const express = require('express')
 const mongoose = require('mongoose')
 const moviesRouter = express.Router();
 
-
+//connect to the document database
 mongoose.connect("mongodb://localhost/playground")
     .then(() => console.log("Connected to the MongoDB"))
     .catch(err => console.log("Error : " + err));
 
 
+
+//create a schema for our document model
 const schema = new mongoose.Schema({
     title : String, 
     genre : String, 
@@ -15,10 +17,11 @@ const schema = new mongoose.Schema({
 });
 
 
-
+//create the model
 const Movie = mongoose.model("Movie", schema);
 
 
+//function to createMovie
 async function createMovie(mtitle, mgenre, myear){
     const movie = new Movie({
         title: mtitle,
@@ -49,6 +52,8 @@ async function deleteMovie(id){
     return movie;
 }
 
+
+//router functions
 moviesRouter.post('/add', function(req, res, next){
     
     let title = req.body.title;
