@@ -1,10 +1,7 @@
 const express = require('express')
 const bodyparser = require('body-parser');
 const app = express()
-// const db = require('./config/connection');
 const moviesRouter = require('./routes/mongoroute');
-
-const Course = require('./config/database');
 
 app.use(express.json());
 app.use(express.urlencoded());
