@@ -1,7 +1,6 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const moviesRouter = express.Router();
-// const bodyparser = require('body-parser');
 
 
 mongoose.connect("mongodb://localhost/playground")
@@ -44,17 +43,22 @@ async function updateMovie(id, title, genre, year){
     return result;
 }
 
+
+async function deleteMovie(id){
+    const movie = await Movie.findByIdAndDelete(id);
+    return movie;
+}
+
 moviesRouter.post('/add', function(req, res, next){
     
     let title = req.body.title;
     let genre = req.body.genre;
     let year = req.body.year;
     
-    const result = createCourse(title, genre, year);
+    const result = createMovie(title, genre, year);
     result.then(output => {
         res.status(200).send({"error": false, message: output})
     }).catch(err => {
-        console.log(new Error(err));
         res.status(400).send({"error": true, message: err})
     })
 })
@@ -69,26 +73,22 @@ moviesRouter.put('/update/:id', function(req, res){
 
     const result = updateMovie(id, mtitle, mgenre, myear);
     result.then(output => {
-        console.log("Update Successfull");
         res.status(200).send({"error": false, "message": "Movie information updated Successfully"})
     })
     .catch(err => {
-        res.status(400).send({"error": true, "message": "Movie update not success" + err})
+        res.status(400).send({"error": true, "message": "Movie update not successful" + err})
     })
 
 })
 
 moviesRouter.delete('/delete/:id', function(req, res){
     let id = req.params.id;
-    db.query("DELETE FROM movies WHERE id= ? ", id, function(err, results){
-        if(err) { res.send({"error" : true, "message": "Delete operation not successful"})}
-        else{
-            if(res.affectedRows > 0){
-                res.send({"error": false, "message": "record deleted successfully"});
-            }else{
-                res.send({"error": true, "message": "No record found "});
-            }
-        }
+    const movie = deleteMovie(id);
+
+    movie.then(result => {
+        res.status(200).send({"error": false, "message": "Movie record deleted Successfully"});
+    }).catch(err => {
+        res.status(400).send({"error": true, "message": "Movie record not found"});
     })
 })
 
